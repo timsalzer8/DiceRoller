@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+
 
 class Program
 {
@@ -37,10 +39,27 @@ class Program
 
             for (int i = 1; i <= count; i++)
             {
-                int result = rnd.Next(1, sides + 1); // Zufallszahl erzeugen
-                Console.WriteLine($"Roll {i}: {result}"); // Einzelwurf anzeigen
-                total += result; // zur Summe addieren
+                Console.Write($"Roll {i}: ");
+
+                // Flackernde Zahl animieren (erscheint an derselben Stelle)
+                for (int j = 0; j < 8; j++)
+                {
+                    int fake = rnd.Next(1, sides + 1);
+                    Console.Write($"{fake}");
+                    Thread.Sleep(80); // Verzögerung in Milisekunden
+
+                    // Überschreibe die vorherige Zahl mit Backspace
+                    Console.Write(new string('\b', fake.ToString().Length));
+                }
+
+                // Echter Wurf
+                int result = rnd.Next(1, sides + 1);
+                Console.WriteLine($"{result}");
+
+                total += result;
             }
+
+
 
             Console.WriteLine($"\nTotal sum of all rolls: {total}");
 
